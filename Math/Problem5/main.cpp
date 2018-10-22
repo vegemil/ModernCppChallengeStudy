@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <math.h>
 
 //## 섹시 소수 쌍을 구하기
 //사용자가 입력한 숫자까지 모든 섹시 소수를 구하여라

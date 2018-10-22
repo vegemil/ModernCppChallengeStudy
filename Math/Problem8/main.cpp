@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <math.h>
 
 //## Armstrong numbers
 //3자리의 Armstrong number 구하기

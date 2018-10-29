@@ -9,8 +9,100 @@
 // create `main` function for catch
 #define CATCH_CONFIG_MAIN   
 #include <catch2/catch.hpp>
+#include <string>
+#include <map>
 
 // Redirect CMake's #define to C++ constexpr string
 constexpr auto TestName = PROJECT_NAME_STRING;
+
+
+class CConvertTemperatureScales {
+private:
+
+	typedef struct {
+		float	offset;
+		float	scale;
+		int		precision; // 소수점.
+	}CONVINFO;
+
+	typedef std::map<std::string, CONVINFO> MAP_CONVINFO;
+
+	float m_fDegree;
+	MAP_CONVINFO m_mapConvInfo;
+	const char* m_keyC;
+	const char* m_keyF;
+	const char* m_keyK;
+	
+
+	std::string _ToConvert(const char* szKey)
+	{
+		MAP_CONVINFO::iterator iter = m_mapConvInfo.find(szKey);
+		if (m_mapConvInfo.end() == iter)
+			return "";
+		const int BUFSIZE = 1024;
+		char szPattern[BUFSIZE];
+		char szBuffer[BUFSIZE];
+
+		sprintf(szPattern, "%%.%df_%s", (*iter).second.precision, szKey);
+		sprintf(szBuffer, szPattern, m_fDegree*(*iter).second.scale + (*iter).second.offset);
+
+		return szBuffer;
+	}
+
+public:
+	CConvertTemperatureScales(const char* szData) 
+		: m_fDegree(0.f)
+	{
+		m_keyC = "deg";
+		m_keyF = "f";
+		m_keyK = "K";
+
+		m_mapConvInfo[m_keyC] = CONVINFO{ 0.f, 1.f, 1 };
+		m_mapConvInfo[m_keyF] = CONVINFO{ 32.f, 180.f / 100.f, 1 };
+		m_mapConvInfo[m_keyK] = CONVINFO{ 273.15f, 1.f, 2 };
+
+		assgign(szData);
+	}
+
+	void assgign(const char* szData) {
+		// TODO : implementation.
+		if (!szData)
+			return;
+		const char* szFind = strchr(szData, '_');
+
+		if (!szFind )
+			return;
+		float fValue = atof(szData);
+
+		MAP_CONVINFO::iterator iter = m_mapConvInfo.find(++szFind);
+
+		if (m_mapConvInfo.end() == iter)
+			return;
+
+		m_fDegree = (fValue - (*iter).second.offset) / (*iter).second.scale;
+	}
+
+	std::string toK() {
+		// TODO : implementation.
+
+		return _ToConvert(m_keyK);
+	}
+
+	std::string toF() {
+		// TODO : implementation.
+		return _ToConvert(m_keyF);
+	}
+
+	std::string toC() {
+		// TODO : implementation.
+		return _ToConvert(m_keyC);
+	}
+};
+
+TEST_CASE("Literals of various temperature scales", "[temperature scales]") {
+	REQUIRE(CConvertTemperatureScales("36.5_deg").toF() == "97.7_f");
+	REQUIRE(CConvertTemperatureScales("97.7_f").toK() == "309.65_K");
+	REQUIRE(CConvertTemperatureScales("309.65_K").toC() == "36.5_deg");
+}
 
 

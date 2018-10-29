@@ -4,7 +4,7 @@
 // 고 309.65_K로 Kelvin을 온도 문자 표현으로 작성할 수 있게 해야 한며, 이 값들로 연산을 수행
 // 하고 변한을 한다.
 
-#include <gsl/gsl>
+#include "gsl/gsl"
 
 // create `main` function for catch
 #define CATCH_CONFIG_MAIN   
@@ -12,3 +12,5 @@
 
 // Redirect CMake's #define to C++ constexpr string
 constexpr auto TestName = PROJECT_NAME_STRING;
+
+

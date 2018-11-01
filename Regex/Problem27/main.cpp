@@ -15,9 +15,9 @@ constexpr auto TestName = PROJECT_NAME_STRING;
 
 static std::string trimString = ",.! ";
 
-std::vector<std::string> split(const std::string& input, const std::string& regex) {
+std::string split(const std::string& input, const std::string& regex) {
 	// passing -1 as the submatch index parameter performs splitting
-	std::vector<std::string> resultStr;
+	std::string resultStr;
 
 	std::regex word_regex(regex);
 
@@ -25,34 +25,25 @@ std::vector<std::string> split(const std::string& input, const std::string& rege
 		std::sregex_iterator(input.begin(), input.end(), word_regex);
 	auto words_end = std::sregex_iterator();
 
+	resultStr.append("{");
 	for (std::sregex_iterator i = words_begin; i != words_end; ++i) 
 	{
+		if (i != words_begin)
+		{
+			resultStr.append(", ");
+		}
 		std::smatch match = *i;
 		std::string match_str = match.str();
 		
-		resultStr.push_back(match_str);
+		resultStr.append("\"");
+		resultStr.append(match_str);
+		resultStr.append("\"");
 	}
+
+	resultStr.append("}");
 
 	return resultStr;
 }
-TEST_CASE("tokenize", "[Joining strings]") {
-
-	/*for (auto iter : trimString)
-	{
-		std::vector<std::string> vec;
-		vec.push_back("this,is.a sample!!");
-
-		for (auto str : vec)
-		{
-			vec = split(str, &(iter));
-		}
-	}*/
-
-
-	std::vector<std::string> vec;
-	vec.push_back("this,is.a sample!!");
-
-	vec = split("this,is.a sample!!", "[,.! ]+");
-
-	/*REQUIRE(split("this,is.a sample!!") == "{\"this\", \"is\", \"a\", \"sample\"}");*/
+TEST_CASE("tokenize string") {
+	REQUIRE(split("this,is.a sample!!", "[^,.! ]+") == "{\"this\", \"is\", \"a\", \"sample\"}");
 }

@@ -8,8 +8,11 @@
 #include "catch2/catch.hpp"
 
 #include <iostream>
+#include <sstream>
+#include <locale>
 #include <iomanip>
-#include <ctime>
+#include <regex>
+#include <string>
 
 // Redirect CMake's #define to C++ constexpr string
 constexpr auto TestName = PROJECT_NAME_STRING;
@@ -17,46 +20,50 @@ constexpr auto TestName = PROJECT_NAME_STRING;
 std::string parseDate(const std::string& input) {
 	std::string resultStr;
 
-	//std::regex word_regex("[^-.]+");
+	std::regex word_date("\\b\\d{2}[.-]\\d{2}[.-]\\d{4}\\b");
 
-	//std::vector<std::string> dateVec;
-
-	//auto words_begin =
-	//	std::sregex_iterator(input.begin(), input.end(), word_regex);
-	//auto words_end = std::sregex_iterator();
-
-	//for (std::sregex_iterator i = words_begin; i != words_end; ++i)
-	//{
-	//	std::smatch match = *i;
-	//	std::string match_str = match.str();
-
-	//	resultStr.insert(0, match_str);
-	//}
-
-	//std::istringstream s(resultStr);
-
-	//std::tm x = {0, };
-	//s >> std::get_time(&x, "%Y%m%d");
-
-	//std::stringstream ss;
-	//ss << std::put_time(&x, "%Y-%m%d");
-	//resultStr = ss.str();
-
-	std::tm t = {};
-	std::istringstream ss("20181102");
-	ss >> std::get_time(&t, "%Y%m%d");
-	if (ss.fail()) {
-		std::cout << "Parse failed\n";
+	std::cmatch m;
+	if (false == std::regex_search(input.c_str(), m, word_date))
+	{
+		return "날짜 아님";
 	}
-	else {
-		std::cout << std::put_time(&t, "%Y-%m%d") << '\n';
+
+	std::regex word_regex("[^-.]+");
+
+	std::vector<std::string> dateVec;
+
+	auto words_begin =
+		std::sregex_iterator(input.begin(), input.end(), word_regex);
+	auto words_end = std::sregex_iterator();
+
+	for (std::sregex_iterator i = words_begin; i != words_end; ++i)
+	{
+		if (i != words_begin)
+			resultStr.insert(0, "-");
+
+		std::smatch match = *i;
+		std::string match_str = match.str();
+
+		resultStr.insert(0, match_str);
 	}
+
+	std::istringstream s(resultStr);
+
+	std::tm x = {0, };
+	s >> std::get_time(&x, "%Y-%m-%d");
+
+	std::stringstream ss;
+	ss << std::put_time(&x, "%Y-%m%d");
+	resultStr = ss.str();
 
 	return resultStr;
 }
 
 
 TEST_CASE("Date Parsing") {
-	parseDate("02-11-2018");
-	parseDate("02.11.2018");
+	REQUIRE(parseDate("02-11-2018") == "2018-1102");
+	REQUIRE(parseDate("02.11.2018") == "2018-1102");
+
+	REQUIRE(parseDate("02.11.20185") == "날짜 아님");
+	REQUIRE(parseDate("02/11/20185") == "날짜 아님");
 }

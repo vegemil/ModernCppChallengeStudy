@@ -1,4 +1,4 @@
-// 35. Computing the size of a directory
+﻿// 35. Computing the size of a directory
 // Write a function that computes the size of a directory, in bytes, recursively. It
 // should be possible to include whether symbolic links should be followed or not.
 // 35. 디렉토리의 크기를 계산하기
@@ -13,6 +13,14 @@
 // Redirect CMake's #define to C++ constexpr string
 constexpr auto TestName = PROJECT_NAME_STRING;
 
-TEST_CASE("tokenize", "[Joining strings]") {
+#include <experimental/filesystem>
 
+TEST_CASE("Computing the size of a directory", "[Joining strings]") {
+	auto currentFolderInfo = std::experimental::filesystem::space(std::experimental::filesystem::current_path());
+
+	std::cout << "Current Path : " << std::experimental::filesystem::current_path() << std::endl;
+
+	std::cout << ".        Capacity       Free      Available\n"
+		<< "current Folder:   " << currentFolderInfo.capacity << "   "
+		<< currentFolderInfo.free << "   " << currentFolderInfo.available << '\n';
 }

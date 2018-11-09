@@ -1,4 +1,4 @@
-// 34. Removing empty lines from a text file
+﻿// 34. Removing empty lines from a text file
 // Write a program that, given the path to a text file, modifies the file by removing
 // all empty lines. Lines containing only whitespaces are considered empty.
 // 34. 텍스트 파일에서 빈 줄을 제거
@@ -13,6 +13,25 @@
 // Redirect CMake's #define to C++ constexpr string
 constexpr auto TestName = PROJECT_NAME_STRING;
 
-TEST_CASE("tokenize", "[Joining strings]") {
+#include <iostream>
+#include <experimental/filesystem>
+#include <fstream>
 
+TEST_CASE("Removing empty lines from a text file") {
+	std::ifstream in_file("../../../Filesystem/Problem34/TEST.txt");
+	std::ofstream out_file("../../../Filesystem/Problem34/RESULT.txt");
+
+	if (true == in_file.good() && true == out_file.good())
+	{
+		std::string line;
+
+		while (getline(in_file, line)) {
+			if (!line.empty()) {
+				out_file << line << '\n';
+			}
+		}
+	}
+
+	in_file.close();
+	out_file.close();
 }

@@ -46,8 +46,15 @@ add_subdirectory(Regex/Problem29)
 add_subdirectory(Regex/Problem30)
 add_subdirectory(Regex/Problem31)
 
+# Ch.4
+add_subdirectory(Filesystem/Problem32)    
+add_subdirectory(Filesystem/Problem33)    
+add_subdirectory(Filesystem/Problem34)    
+add_subdirectory(Filesystem/Problem35)    
+add_subdirectory(Filesystem/Problem36)    
+add_subdirectory(Filesystem/Problem37)    
+add_subdirectory(Filesystem/Problem38)    
 
-# add_subdirectory(Filesystem)    # Ch.4
 # add_subdirectory(DateTime)      # Ch.5
 # add_subdirectory(Algorithm)     # Ch.6
 # add_subdirectory(Concurrency)   # Ch.7

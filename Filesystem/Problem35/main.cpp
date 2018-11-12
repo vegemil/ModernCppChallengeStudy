@@ -15,12 +15,13 @@ constexpr auto TestName = PROJECT_NAME_STRING;
 
 #include <experimental/filesystem>
 
-TEST_CASE("Computing the size of a directory", "[Joining strings]") {
+TEST_CASE("Computing the size of a directory") {
 	auto currentFolderInfo = std::experimental::filesystem::space(std::experimental::filesystem::current_path());
 
-	std::cout << "Current Path : " << std::experimental::filesystem::current_path() << std::endl;
+	std::cout << "Current Path : " << std::experimental::filesystem::current_path() << std::endl << std::endl;
 
-	std::cout << ".        Capacity       Free      Available\n"
+	std::cout << "                      Capacity         Free        Available\n"
 		<< "current Folder:   " << currentFolderInfo.capacity << "   "
 		<< currentFolderInfo.free << "   " << currentFolderInfo.available << '\n';
+
 }

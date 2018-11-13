@@ -55,7 +55,13 @@ add_subdirectory(Filesystem/Problem36)
 add_subdirectory(Filesystem/Problem37)    
 add_subdirectory(Filesystem/Problem38)    
 
-# add_subdirectory(DateTime)      # Ch.5
+# Ch.5
+add_subdirectory(DateTime/Problem39)      
+add_subdirectory(DateTime/Problem40)      
+add_subdirectory(DateTime/Problem41)      
+add_subdirectory(DateTime/Problem42)      
+add_subdirectory(DateTime/Problem43)      
+add_subdirectory(DateTime/Problem44)      
 # add_subdirectory(Algorithm)     # Ch.6
 # add_subdirectory(Concurrency)   # Ch.7
 # add_subdirectory(Serialization) # Ch.9

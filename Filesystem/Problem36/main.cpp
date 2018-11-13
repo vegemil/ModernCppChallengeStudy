@@ -1,4 +1,4 @@
-// 36. Deleting files older than a given date
+﻿// 36. Deleting files older than a given date
 // Write a function that, given the path to a directory and a duration, deletes all
 // the entries (files or subdirectories) older than the specified duration, in a
 // recursive manner. The duration can represent anything, such as days, hours,
@@ -19,6 +19,60 @@
 // Redirect CMake's #define to C++ constexpr string
 constexpr auto TestName = PROJECT_NAME_STRING;
 
-TEST_CASE("tokenize", "[Joining strings]") {
+#include <experimental/filesystem>
+#include <ctime>
 
+bool checkModifyDate(std::tm* time, const std::experimental::filesystem::path & p)
+{
+	auto fileTime = std::experimental::filesystem::last_write_time(p);
+
+	std::time_t cftime = decltype(fileTime)::clock::to_time_t(fileTime);
+	std::time_t mtime = std::mktime(time); // time_t 형식으로 변경. 
+
+	std::cout << p.generic_string() << " ";
+
+	if (cftime < mtime)
+	{
+		if (std::experimental::filesystem::remove(p) == false)
+		{
+			std::cout << "ERROR REMOVE FILE!" << std::endl;
+		}
+		else
+		{
+			std::cout << "REMOVE FILE SUCCESS!" << std::endl;
+		}
+		return false;
+	}
+	else
+	{ 
+		std::cout << "FILE SURVIVE!" << std::endl;
+		return true;
+	}
+}
+
+void checkDirectory(std::tm* time, const std::experimental::filesystem::path & p)
+{
+	if (std::experimental::filesystem::is_directory(p))
+	{
+		if (false == checkModifyDate(time, p))
+		{
+			return;
+		}
+	}
+
+	if (true == checkModifyDate(time, p))
+	{
+		for (auto& p : std::experimental::filesystem::recursive_directory_iterator(p))
+		{
+			checkModifyDate(time, p);
+		}
+	}
+}
+
+TEST_CASE("Deleting files older than a given date") {
+	std::istringstream s("2018-10-01");
+	std::tm x = { 0, };
+	s >> std::get_time(&x, "%Y-%m-%d");
+
+	checkDirectory(&x, "C:\\Users\\euna501\\Downloads\\LINE WORKS");
 }

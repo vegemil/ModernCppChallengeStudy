@@ -8,6 +8,7 @@ set(ROOT_DIR                ${CMAKE_SOURCE_DIR})
 set(CMAKE_INSTALL_PREFIX    ${CMAKE_SOURCE_DIR}/Solved)
 
 include(GetModules)
+include_directories(External/include)
 
 # Ch.1 
 add_subdirectory(Math/Problem01)

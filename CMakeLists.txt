@@ -63,7 +63,12 @@ add_subdirectory(DateTime/Problem41)
 add_subdirectory(DateTime/Problem42)      
 add_subdirectory(DateTime/Problem43)      
 add_subdirectory(DateTime/Problem44)      
-# add_subdirectory(Algorithm)     # Ch.6
+
+# Ch.6
+#add_subdirectory(Algorithm/Problem45)    
+add_subdirectory(Algorithm/Problem49)    
+add_subdirectory(Algorithm/Problem51) 
+
 # add_subdirectory(Concurrency)   # Ch.7
 # add_subdirectory(Serialization) # Ch.9
 # add_subdirectory(DesignPattern) # Ch.8
